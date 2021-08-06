@@ -8,22 +8,31 @@ This project describes how I used AWS CloudFormation to deploy a WebApp project.
 
 
 ```python
-(1) 
+(1) Create a S3 bucket and upload the WebApp code files to be deployed inside it.
 
-(2)
+(2) Create the network infracstructure by running the cloud formation script to deploy it as shown below.
 
-(3)
+aws cloudformation create-stack --stack-name myinfra --template-body file://myinfra.yml --parameters file://infra-parameter-file.json --region=us-west-2
 
-(4)
+This will create the network resources required for the project.
+- VPC
+- Internet Gateway
+- Public and Private subnets
+- NAT gateway
+- Route tables and associations
 
-(5)
+(3) Create other required infracstructure by running below script.
 
-# returns 'words'
-foobar.pluralize('word')
+aws cloudformation create-stack --stack-name myserver --template-body file://myservers.yml --parameters file://servers-parameter-file.json --region=us-west-2 --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 
-# returns 'geese'
-foobar.pluralize('goose')
+This will create the other infrastructure resources required for the project.
+- Security Groups
+- Roles
+- Launch Configurations
+- AutoScaling Groups
+- Load Balancers
 
-# returns 'phenomenon'
-foobar.singularize('phenomena')
+(4)  In the output of the last run cloudformation script, click on the URL of the Load balancer shown to access the webapp.
+
+
 ```
